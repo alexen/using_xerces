@@ -9,6 +9,7 @@
 #include <boost/exception/diagnostic_information.hpp>
 
 #include <xercesc/util/PlatformUtils.hpp>
+#include <xercesc/util/XMLString.hpp>
 
 int main()
 {
@@ -18,8 +19,11 @@ int main()
 
           xercesc::XMLPlatformUtils::Terminate();
      }
-     catch( const xercesc::XMLException& )
+     catch( const xercesc::XMLException& e )
      {
+          char* message = xercesc::XMLString::transcode( e.getMessage() );
+          std::cerr << "XML exception: " << message << '\n';
+          xercesc::XMLString::release( &message );
      }
      catch( const std::exception& e )
      {
